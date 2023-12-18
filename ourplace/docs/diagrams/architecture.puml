@@ -1,0 +1,56 @@
+@startuml
+component client {
+package ourplace.client
+}
+
+component core {
+package ourplace.core
+package ourplace.json
+}
+
+component fxui {
+package ourplace.ui
+}
+
+component rest {
+package ourplace.rest
+}
+
+component spring
+component jackson
+component testfx
+component junit
+component WireMock
+component javafx 
+
+' fxui
+ourplace.ui ..> javafx 
+ourplace.ui ..> testfx
+ourplace.ui ..> ourplace.core
+ourplace.ui ..> ourplace.client
+ourplace.ui ..> ourplace.rest
+ourplace.ui ..> junit
+
+' core
+ourplace.json ..> jackson
+core ..> spring
+core ..> junit
+
+' client
+ourplace.client ..> spring
+ourplace.client ..> jackson
+ourplace.client ..> ourplace.core
+ourplace.client ..> ourplace.rest
+ourplace.client ..> junit
+client ..> WireMock
+
+' rest
+ourplace.rest ..> spring
+ourplace.rest ..> core
+ourplace.rest ..> jackson
+ourplace.rest ..> junit
+
+' other
+ourplace.json ..> ourplace.core
+
+@enduml

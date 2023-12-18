@@ -1,0 +1,93 @@
+@startuml
+
+' Client classes
+class RestClient{
+    + {static} String ENDPOINT
+    - RestClient() 
+    + {static} void publishPost(Post) 
+    + {static} Stack<Post> getPosts() 
+    + {static} void likePost(Post) 
+}
+
+' Core classes
+class Feed{
+    + {static} Stack<Post> sort(Stack<Post>, FeedSort)
+    - {static} Stack<Post> dateAscending(Stack<Post>)
+    - {static} Stack<Post> likesAscending(Stack<Post>)
+}
+
+class Post{
+    - String uuid
+    - String creator
+    - String header 
+    - String body
+    - String date
+    - int likes
+    - boolean liked
+    - {static} int END_INDEX_UUID 
+    + Post()
+    + {static} Post create(String, String, String)
+    + String getCreator()
+    + String getHeader()
+    + String getBody()
+    + String getDate()
+    + void prepareToPublish() 
+    + void setCreator(String)
+    + int getLikes()
+    + void incrementLikes()
+    + boolean isLiked()
+    + void setLiked(boolean)
+    + String getUuid()
+    + void setUuid(String)
+}
+
+class FileManager{
+    - FileManager()
+    + {static} String getPath()
+    + {static} Stack<Post> getPosts()
+    + {static} void writePosts(Stack<Post>)
+}
+
+' Rest classes
+
+class OurplaceRestController{
+    - ServerInterface server
+    + ResponseEntity<Void> publish(Post) 
+    + ResponseEntity<List<Post>> fetchAll()
+    + ResponseEntity<Void> deletePost()
+    + ResponseEntity<Void> like(String)
+}
+
+class Server{
+    - {static} Stack<Post> feed
+    + boolean isEmpty()
+    + {static} void publish(Post)
+    + {static} Stack<Post> fetchAll()
+    + {static} void deleteLast() 
+    + {static} void save()
+}
+
+interface ServerInterface{
+    + boolean isEmpty()
+    + void publish(Post)
+    + Stack<Post> fetchAll()
+    + void deleteLast();
+    + void save()
+}
+
+RestClient --> Post
+
+Feed --> Post
+FileManager  --> Post
+
+OurplaceRestController  --> Post
+OurplaceRestController  --> ServerInterface
+
+
+Server --> Post
+Server --> FileManager
+Server ..> ServerInterface
+ServerInterface --> Post
+
+
+@enduml

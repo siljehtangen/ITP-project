@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nb"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Post.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">gr2310.ourplace.core</a> &gt; <span class="el_source">Post.java</span></div><h1>Post.java</h1><pre class="source lang-java linenums">package gr2310.ourplace.core;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+public class Post {
+  /** The id of the post. */
+  private String uuid;
+  /** The name of the person who made the post. */
+  private String creator;
+  /** The text in the post's header. */
+  private String header;
+  /** The text in the post's body. */
+  private String body;
+  /** The string representation of the date the post was made. */
+  private String date;
+  // private Comment[] comments; (Coming soon)
+  /** The number of likes a post have. */
+  private int likes;
+  /** The boolean representation of whether the post has been liked or not. */
+  private boolean liked;
+
+  /** Public empty constructor. */
+<span class="fc" id="L24">  public Post() {</span>
+<span class="fc" id="L25">  }</span>
+
+  /** Value of the ending to shorten the uuid. */
+  private static final int END_INDEX_UUID = 5;
+
+  /**
+   * Create a &lt;b&gt;Post&lt;/b&gt;. Date is not assigned until you publish the post.
+   *
+   * @param creator Username of Post creator
+   * @param header  Post header/title
+   * @param body    Post body/content
+   *
+   * @return the post that was made
+   */
+  public static Post create(final String creator, final String header,
+      final String body) {
+<span class="fc" id="L41">    Post post = new Post();</span>
+
+<span class="fc" id="L43">    post.creator = creator;</span>
+<span class="fc" id="L44">    post.header = header;</span>
+<span class="fc" id="L45">    post.body = body;</span>
+
+<span class="fc" id="L47">    post.uuid = UUID.randomUUID().toString().substring(0, END_INDEX_UUID);</span>
+
+<span class="fc" id="L49">    return post;</span>
+  }
+
+  /**
+   * @return the creator of the post.
+   */
+  public String getCreator() {
+<span class="fc" id="L56">    return creator;</span>
+  }
+
+  /**
+   * @return the header of the post.
+   */
+  public String getHeader() {
+<span class="fc" id="L63">    return header;</span>
+  }
+
+  /**
+   * @return the body of the post.
+   */
+  public String getBody() {
+<span class="fc" id="L70">    return body;</span>
+  }
+
+  // public Comment[] getComments() {
+  // return comments; (Coming soon.)
+  // }
+
+  /**
+   * @return the date of the post.
+   */
+  public String getDate() {
+<span class="fc" id="L81">    return date;</span>
+  }
+
+  /** Set &lt;b&gt;Post.date&lt;/b&gt; to current date and id. */
+  public void prepareToPublish() {
+<span class="fc" id="L86">    date = LocalDate.now().toString();</span>
+<span class="fc" id="L87">  }</span>
+
+  /**
+   * Sets the posts creator.
+   *
+   * @param creator the creator to be set
+   */
+  public void setCreator(final String creator) {
+<span class="fc" id="L95">    this.creator = creator;</span>
+<span class="fc" id="L96">  }</span>
+
+  /**
+   *
+   * @return number of likes of the post.
+   */
+  public int getLikes() {
+<span class="fc" id="L103">    return likes;</span>
+  }
+
+  /**
+   * Increments likes.
+   */
+  public void incrementLikes() {
+<span class="fc" id="L110">    likes++;</span>
+<span class="fc" id="L111">  }</span>
+
+  /**
+   *
+   * @return whether the post has been liked or not.
+   */
+  public boolean isLiked() {
+<span class="fc" id="L118">    return liked;</span>
+  }
+
+  /**
+   * Sets the boolean value liked.
+   *
+   * @param liked
+   */
+  public void setLiked(final boolean liked) {
+<span class="fc" id="L127">    this.liked = liked;</span>
+<span class="fc" id="L128">  }</span>
+
+  /**
+   *
+   * @return the post id.
+   */
+  public String getUuid() {
+<span class="fc" id="L135">    return uuid;</span>
+  }
+
+  /**
+   * Sets the post id to id.
+   *
+   * @param id of the post.
+   */
+  public void setUuid(final String id) {
+<span class="fc" id="L144">    this.uuid = id;</span>
+<span class="fc" id="L145">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: gr2310.ourplace.ui.AppTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 8.181 s <<< FAILURE! -- in gr2310.ourplace.ui.AppTest
+gr2310.ourplace.ui.AppTest.testUI -- Time elapsed: 8.113 s <<< ERROR!
+org.testfx.api.FxRobotException: the query "#postbutton" returned no nodes.
+	at org.testfx.api.FxRobot.queryVisibleNode(FxRobot.java:949)
+	at org.testfx.api.FxRobot.pointOfVisibleNode(FxRobot.java:922)
+	at org.testfx.api.FxRobot.clickOn(FxRobot.java:630)
+	at org.testfx.api.FxRobot.clickOn(FxRobot.java:59)
+	at org.testfx.api.FxRobotInterface.clickOn(FxRobotInterface.java:639)
+	at gr2310.ourplace.ui/gr2310.ourplace.ui.AppTest.testUI(AppTest.java:93)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

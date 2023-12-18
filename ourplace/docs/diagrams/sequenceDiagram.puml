@@ -1,0 +1,23 @@
+@startuml
+actor User as User
+participant UserInterface as UserInterface
+participant FeedController as FeedController
+participant RestClient as RestClient
+participant OurplaceRestController as OurplaceRestController
+participant Server as Server
+participant FileManager as FileManager
+
+User -> UserInterface: "I want to see the posts"
+UserInterface -> FeedController: Request to view feed
+FeedController -> RestClient: initialize()
+' RestClient -> OurplaceRestController: getPosts()
+RestClient -> OurplaceRestController: getPosts()
+OurplaceRestController -> Server: fetchAll()
+Server -> FileManager: fetchAll()
+FileManager --> Server: postStack
+Server --> OurplaceRestController: postStack
+OurplaceRestController --> RestClient: postList
+RestClient --> FeedController: postStack
+FeedController --> UserInterface: Display post feed view
+UserInterface --> User: FeedView
+@enduml

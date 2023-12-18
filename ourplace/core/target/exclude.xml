@@ -1,0 +1,16 @@
+<FindBugsFilter>
+    <!-- Exclusions due to deliberate design choice in App.start(Stage) method. -->
+    <Match>
+        <Class name="gr2310.ourplace.ui.App" />
+        <Method name="start" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+    <Match>
+        <Class name="gr2310.ourplace.ui.FeedController" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+    <Match>
+        <Class name="gr2310.ourplace.ui.PostController" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+</FindBugsFilter>

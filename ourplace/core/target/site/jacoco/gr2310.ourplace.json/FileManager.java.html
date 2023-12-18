@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nb"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">gr2310.ourplace.json</a> &gt; <span class="el_source">FileManager.java</span></div><h1>FileManager.java</h1><pre class="source lang-java linenums">package gr2310.ourplace.json;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Stack;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gr2310.ourplace.core.Post;
+
+public final class FileManager {
+    /** File name with extension. */
+    private String fileName;
+
+    /**
+     * Create a FileManager that modifies file with name &quot;fileName&quot;.
+     * @param fileName File name with extension.
+    */
+<span class="fc" id="L22">    public FileManager(final String fileName) {</span>
+<span class="fc" id="L23">        this.fileName = fileName;</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Set target file name.
+     * @param name File name with extension.
+    */
+    public void setFileName(final String name) {
+<span class="nc" id="L31">        fileName = name;</span>
+<span class="nc" id="L32">    }</span>
+
+    /**
+     * Return relative file path.
+     *
+     * @return the path to posts.json, located in user's user.home.
+     */
+    public String getPath() {
+<span class="fc" id="L40">        Path path = Paths.get(System.getProperty(&quot;user.home&quot;), &quot;/&quot; + fileName);</span>
+<span class="fc" id="L41">        return path.toString();</span>
+    }
+
+    /**
+     * Read and get feed from file.
+     *
+     * @return the stack of posts
+     */
+    public Stack&lt;Post&gt; getPosts() {
+<span class="fc" id="L50">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L51">        Stack&lt;Post&gt; posts = new Stack&lt;&gt;();</span>
+
+        try {
+<span class="fc" id="L54">            File file = new File(getPath());</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">            if (file.exists()) {</span>
+<span class="fc" id="L56">                posts = mapper.readValue(file,</span>
+<span class="fc" id="L57">                        new TypeReference&lt;Stack&lt;Post&gt;&gt;() {</span>
+                        });
+            } else {
+<span class="nc" id="L60">                System.err.println(&quot;posts.json not found or is empty&quot;);</span>
+            }
+<span class="nc" id="L62">        } catch (IOException e) {</span>
+<span class="nc" id="L63">            e.printStackTrace();</span>
+<span class="fc" id="L64">        }</span>
+
+<span class="fc" id="L66">        return posts;</span>
+    }
+
+    /**
+     * Writes the feed post stack to file.
+     *
+     * @param posts the feed to be written to file
+     */
+    public void writePosts(final Stack&lt;Post&gt; posts) {
+<span class="fc" id="L75">        ObjectMapper mapper = new ObjectMapper();</span>
+
+        try {
+<span class="fc" id="L78">            File file = new File(getPath());</span>
+<span class="fc" id="L79">            mapper.writeValue(file, posts);</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            e.printStackTrace();</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

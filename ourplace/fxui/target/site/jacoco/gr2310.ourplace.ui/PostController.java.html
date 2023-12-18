@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nb"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">fxui</a> &gt; <a href="index.source.html" class="el_package">gr2310.ourplace.ui</a> &gt; <span class="el_source">PostController.java</span></div><h1>PostController.java</h1><pre class="source lang-java linenums">package gr2310.ourplace.ui;
+
+import java.io.IOException;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import gr2310.ourplace.core.Post;
+import gr2310.ourplace.client.RestClient;
+
+public class PostController implements Controller {
+  /** The app that is running. */
+  private App app;
+  /** Text field for the post title. */
+  @FXML
+  private TextField titlefield;
+  /** Text field for post body. */
+  @FXML
+  private TextArea postfield;
+  /** Max header length for post. */
+  private static final int HEADER_LENGTH_MAX = 50;
+  /** Max body length for post. */
+  private static final int BODY_LENGTH_MAX = 250;
+
+  /** Constructs a new PostController with initialized title and post fields. */
+<span class="nc" id="L28">  public PostController() {</span>
+<span class="nc" id="L29">    this.titlefield = new TextField();</span>
+<span class="nc" id="L30">    this.postfield = new TextArea();</span>
+<span class="nc" id="L31">  }</span>
+
+  /**
+   * Gets the title from the associated text field.
+   *
+   * @return The title as a String.
+   */
+  public String getTitle() {
+<span class="nc" id="L39">    return titlefield.getText();</span>
+  }
+
+  /**
+   * Sets the title of the associated text field.
+   *
+   * @param title The title to set.
+   */
+  public void setTitle(final String title) {
+<span class="nc" id="L48">    titlefield.setText(title);</span>
+<span class="nc" id="L49">  }</span>
+
+  /**
+   * Gets the body from the associated text area.
+   *
+   * @return The body as a String.
+   */
+  public String getBody() {
+<span class="nc" id="L57">    return postfield.getText();</span>
+  }
+
+  /**
+   * Sets the body of the associated text area.
+   *
+   * @param body The body to set.
+   */
+  public void setBody(final String body) {
+<span class="nc" id="L66">    postfield.setText(body);</span>
+<span class="nc" id="L67">  }</span>
+
+  /**
+   * Attempts to publish a post.
+   * Displays a warning alert if there are issues with the input data.
+   * Navigates to the feed scene upon successful publishing.
+   *
+   * @throws IOException If an I/O error occurs.
+   */
+  public void fxmlPublish() throws IOException {
+<span class="nc" id="L77">    PostResult result = publish();</span>
+<span class="nc bnc" id="L78" title="All 5 branches missed.">    switch (result) {</span>
+      case empty:
+<span class="nc" id="L80">        alert(&quot;You cannot publish an empty post&quot;);</span>
+<span class="nc" id="L81">        break;</span>
+      case headerLong:
+<span class="nc" id="L83">        alert(&quot;Title cannot be longer than 50 characters&quot;);</span>
+<span class="nc" id="L84">        break;</span>
+      case bodyLong:
+<span class="nc" id="L86">        alert(&quot;Body cannot be longer than 250 characters&quot;);</span>
+<span class="nc" id="L87">        break;</span>
+      case success:
+<span class="nc" id="L89">        app.setScene(&quot;/Feed.fxml&quot;);</span>
+<span class="nc" id="L90">        break;</span>
+      default:
+<span class="nc" id="L92">        return;</span>
+    }
+<span class="nc" id="L94">  }</span>
+
+  /**
+   * Displays a warning alert with the specified message.
+   *
+   * @param message The message to be displayed in the alert.
+   */
+  private void alert(final String message) {
+<span class="nc" id="L102">    final String title = &quot;Warning&quot;;</span>
+
+<span class="nc" id="L104">    final Alert alert = new Alert(AlertType.WARNING);</span>
+<span class="nc" id="L105">    alert.setTitle(title);</span>
+<span class="nc" id="L106">    alert.setHeaderText(null);</span>
+<span class="nc" id="L107">    alert.setContentText(message);</span>
+<span class="nc" id="L108">    alert.show();</span>
+<span class="nc" id="L109">  }</span>
+
+  /**
+   * Attempts to publish a post.
+   *
+   * @return The result of the publish operation as a PostResult enum.
+   * @throws IOException If an I/O error occurs.
+   */
+  public PostResult publish() throws IOException {
+<span class="nc" id="L118">    String header = titlefield.getText();</span>
+<span class="nc" id="L119">    String body = postfield.getText();</span>
+
+<span class="nc bnc" id="L121" title="All 4 branches missed.">    if (header.trim().isEmpty() || body.trim().isEmpty()) {</span>
+<span class="nc" id="L122">      return PostResult.empty;</span>
+    }
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    if (header.length() &gt; HEADER_LENGTH_MAX) {</span>
+<span class="nc" id="L126">      return PostResult.headerLong;</span>
+    }
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">    if (body.length() &gt; BODY_LENGTH_MAX) {</span>
+<span class="nc" id="L130">      return PostResult.bodyLong;</span>
+    }
+    // Makes a new post and adds it to the post stack in Server
+<span class="nc" id="L133">    Post post = Post.create(null, header, body);</span>
+
+<span class="nc" id="L135">    RestClient.publishPost(post);</span>
+
+<span class="nc" id="L137">    return PostResult.success;</span>
+  }
+
+  /** Switches the scene back to feed without making a post. */
+  public void cancelPost() throws IOException {
+<span class="nc" id="L142">    app.setScene(&quot;/Feed.fxml&quot;);</span>
+<span class="nc" id="L143">  }</span>
+
+  /**
+   * Sets app reference.
+   *
+   * @param app the app that is running.
+   */
+  @Override
+  public void setApp(final App app) {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">    if (app != null) {</span>
+<span class="nc" id="L153">      this.app = app;</span>
+<span class="nc" id="L154">    } else {</span>
+<span class="nc" id="L155">      throw new IllegalArgumentException(&quot;App in setApp method was null&quot;);</span>
+    }
+<span class="nc" id="L157">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
